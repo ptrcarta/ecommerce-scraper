@@ -35,10 +35,10 @@ class Item:
         try:
             self._image = self._bsitem.find(attrs = {'class':'srp-imagebox'})['data-imgsrc'] # This one as to be converted in the non thumbnail one
         except KeyError:
-            self._image = 'NA'
+            self._image = None
         try:
             self._link = self._bsitem.find(attrs = {'class':'srp-item-link'})['href'] # Has to be prepended with domain name
         except KeyError:
-            self._link = 'NA'
+            self._link = None
 
 
