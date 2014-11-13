@@ -1,3 +1,9 @@
+from item import Item
+from page import Page
+
+import json
+import re
+
 class ItemKijiji(Item):
     "container class for a kijiji item."
 
@@ -12,7 +18,7 @@ class ItemKijiji(Item):
 
     @property
     def link(self): 
-        return "http://kijiji.it/annunci/" + 
+        return "http://kijiji.it/annunci/" + \
         re.sub('/s-annuncio/', '', self._link)
 
     def to_JSON(self):

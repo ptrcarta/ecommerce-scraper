@@ -1,6 +1,3 @@
-import json
-import re
-
 class Item:
     "container class for an item."
 
@@ -36,6 +33,6 @@ class Item:
         return self.to_JSON()
 
     def parse_item(self):
-        "Turns the beautifulsoup 
+        "Turns the beautifulsoup into semantic data"
         pass
        

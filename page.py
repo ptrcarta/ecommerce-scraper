@@ -1,3 +1,6 @@
+from bs4 import BeautifulSoup
+from urllib.request import urlopen #revise to change User-Agent
+
 class Page:
 
     _sanitize_attributes = {'None':'None'}
@@ -5,12 +8,11 @@ class Page:
     _url = 'url'
 
     def __init__(self, search_term, location=''):
-        pass                
         self._search = search_term
         self._location = location
-        self._url = self._url.format(_search)
+        self._url = self._url.format(self._search)
         self.fetch_page()
-        sanitize()
+        self.sanitize()
 
     def fetch_page(self):
         page = urlopen(self._url)
@@ -24,3 +26,7 @@ class Page:
             i.extract()
         if len(delitems) != 0:
             raise Exception('Could not sanitize the page completely')
+
+    def output(self):
+        items = self._content.find_all(attrs = self._items_attributes)
+        return items
