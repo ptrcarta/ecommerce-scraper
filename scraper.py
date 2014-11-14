@@ -53,4 +53,4 @@ while True:
     for search in searchers:
         i += cont.add(search.get())
     print(i)
-    sleep(option.refresh)
+    sleep(float(option.refresh))
