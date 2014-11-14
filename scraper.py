@@ -1,22 +1,54 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+#! /usr/bin/env python3
 
-# configuration
-keyword = 'thinkpad'
+from optparse import OptionParser
+import sys
 
-url = {'kijiji_mobile':'http://m.kijiji.it/s-annunci/italia/{0}/c0-l0',
-        'ebay-annunci':'http://annunci.ebay.it/elettronica/computer-e-software'
-        '/{0}/?entry_point=sb',
-        }
+parser = OptionParser(usage="Usage: %prog -s\'search term\' -p\'platform\'")
 
-items_attributes = {'kijiji_mobile':{'class':'srp-item'},
-                    'ebay-annunci':{'class':'search-results-list-item'}} #this is for the k site. other formats need different attributes
+parser.add_option("-s", "--search", action="append", dest="search",
+                help="The keyword you want to search for")
+parser.add_option("-p", "--platform", action="append", dest="platform",
+                help="The platform that will be searched. must be the name of"
+                " a plugin module (example: for kijiji.py write kijiji)")
+parser.add_option("-l", "--location", action="append", dest="location",
+                help="The geographical location for the item "
+                "//not yet implemented//")
 
-items_sanitize_attributes = {'kijiji_mobile':{'class':''},
-                            'ebay-annunci':{'class':['is-urgent-ad','is-topad-list-item']}} 
+(option, args) = parser.parse_args()
 
-# specify search and platforms
+if option.search == None:
+    sys.stderr.write('You need to specify at least a search term\n')
+    exit(code=1)
+if option.platform == None:
+    sys.stderr.write('You need to specify at least a search term\n')
+    exit(code=1)
 
-#specify looping time
+### Plugin Loading System ###
 
-# annotate the scraping time
+import importlib 
+for module in option.platform:
+    module = 'pl.' + module
+    try:
+        modules = {module:importlib.import_module(module.lower())}
+    except ImportError:
+        sys.stderr.write('Could not import module {0}\n'.format(module))
+        exit(code=1)
+
+
+searchers = []
+for search in option.search:
+    for platform in option.platform:
+        searchers.append(getattr(modules['pl.'+platform.lower()],
+                        'Page' + platform.capitalize())(search))
+
+### Main loop ###
+from pl.page import Container
+from time import sleep
+
+while True:
+    cont = Container(option.search[0])
+    i = 0
+    for search in searchers:
+        i += cont.add(search.get())
+    print(i)
+    sleep(60)

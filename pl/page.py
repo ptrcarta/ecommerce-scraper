@@ -11,8 +11,6 @@ class Page:
         self._search = search_term
         self._location = location
         self._url = self._url.format(self._search)
-        self.fetch_page()
-        self.sanitize()
 
     def fetch_page(self):
         page = urlopen(self._url)
@@ -81,8 +79,9 @@ class Item:
 import json
 
 class Container():
-    def __init__(self, list):
-        self._list = list
+    def __init__(self, description):
+        self._description = description
+        self._list = []
 
     def to_JSON(self):
         json_string = '{\n'

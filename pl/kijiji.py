@@ -1,4 +1,4 @@
-from page import Page, Item
+from .page import Page, Item
 
 import json
 import re
