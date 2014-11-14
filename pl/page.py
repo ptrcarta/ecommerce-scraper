@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from urllib.request import urlopen #revise to change User-Agent
+from urllib.request import urlopen, Request
 
 class Page:
 
@@ -13,7 +13,9 @@ class Page:
         self._url = self._url.format(self._search)
 
     def fetch_page(self):
-        page = urlopen(self._url)
+        page = Request(self._url, headers={'User-Agent':"Mozilla/5.0 (X11; U; "
+                        "Linux i686) Gecko/20071127 Firefox/2.0.0.11"})
+        page = urlopen(page)
         if page.status != 200:
             raise Exception # we'll see later
         self._content = BeautifulSoup(page)
