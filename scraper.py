@@ -13,6 +13,8 @@ parser.add_option("-p", "--platform", action="append", dest="platform",
 parser.add_option("-l", "--location", action="append", dest="location",
                 help="The geographical location for the item "
                 "//not yet implemented//")
+parser.add_option("-r", "--refresh-rate", action="store", dest="refresh",
+                help="Time interval between page fetches", default=60)
 
 (option, args) = parser.parse_args()
 
@@ -45,10 +47,10 @@ for search in option.search:
 from pl.page import Container
 from time import sleep
 
+i = 0
 while True:
     cont = Container(option.search[0])
-    i = 0
     for search in searchers:
         i += cont.add(search.get())
     print(i)
-    sleep(60)
+    sleep(option.refresh)
