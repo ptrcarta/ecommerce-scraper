@@ -30,3 +30,72 @@ class Page:
     def output(self):
         items = self._content.find_all(attrs = self._items_attributes)
         return items
+
+    def get(self):
+        self.fetch_page()
+        self.sanitize()
+        return self.output()
+
+
+class Item:
+    "container class for an item."
+
+    def __init__(self, bsitem):
+        self._scrape_time = time.time()
+        self._bsitem = bsitem
+        self.parse_item()
+
+    @property
+    def title(self):
+        "Name of the article"
+        pass
+
+    @property
+    def price(self):
+        "Price of the thing"
+        pass
+    
+    @property
+    def link(self): 
+        "link to the page with the article"
+        pass
+
+    @property
+    def image(self): 
+        "Image that goes with other info"
+        pass
+
+    def to_JSON(self):
+        pass
+
+    def __str__(self):
+        return self.to_JSON()
+
+    def parse_item(self):
+        "Turns the beautifulsoup into semantic data"
+        pass
+
+import json
+
+class Container():
+    def __init__(self, list):
+        self._list = list
+
+    def to_JSON(self):
+        json_string = '{\n'
+        for num in range(len(self._list)):
+            json_string += '"Item_{0}": '.format(num)
+            json_string += self._list[num].to_JSON()
+            if num != len(self._list) - 1:
+                json_string += ',\n'
+        json_string += '\n}' 
+        return json_string
+
+    def add(self, list):
+        length = len(self._list)
+        for item in range(length):
+            for new in list:
+                if item.link == new.link:
+                    del new
+                    continue
+        self._list = list + self._list

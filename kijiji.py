@@ -1,5 +1,4 @@
-from item import Item
-from page import Page
+from page import Page, Item
 
 import json
 import re
@@ -7,6 +6,10 @@ import re
 class ItemKijiji(Item):
     "container class for a kijiji item."
 
+    @property
+    def image(self):
+        "link to image"
+        return re.sub('thumbnail\.jpg$', 'big.jpg', self._image)
     @property
     def title(self):
         "Name of the article"
@@ -21,9 +24,9 @@ class ItemKijiji(Item):
         return "http://kijiji.it/annunci/" + \
         re.sub('/s-annuncio/', '', self._link)
 
-    def to_JSON(self):
-        return json.dumps({'price':self.price, 'title':self._title,
-        'link':self.link, 'image':self._image}, indent=4)
+    def to_JSON(self, indent = None):
+        return json.dumps({'price':self.price, 'title':self.title,
+        'link':self.link, 'image':self.image}, indent=4)
 
     def parse_item(self):
         "Parse html and puts resulting items in a list of Item objects" 
@@ -58,5 +61,13 @@ class PageKijiji(Page):
 
     _items_attributes = {'class':'srp-item'}
     _url = 'http://m.kijiji.it/s-annunci/italia/{0}/c0-l0'
+
+    def output(self):
+        "returns a list with the current items on the page"
+        items = super().output()
+        catalog = []
+        for item in items:
+           catalog.append(ItemKijiji(item))
+        return catalog
 
 
