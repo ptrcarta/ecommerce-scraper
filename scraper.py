@@ -47,9 +47,9 @@ for search in option.search:
 from pl.page import Container
 from time import sleep
 
+cont = Container(option.search[0])
 i = 0
 while True:
-    cont = Container(option.search[0])
     for search in searchers:
         i += cont.add(search.get())
     print(i)

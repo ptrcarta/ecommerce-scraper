@@ -95,13 +95,14 @@ class Container():
 
     def add(self, list):
         "adds the items to the container and checks for dupes"
-        for i in range(len(self._list)): # The following lines remove dupes
-            j = len(list) - 1
-            while j >= 0:
-                if self._list[i].link == list[j].link:
-                    del list[j]
-                    break
-                j -= 1
+        if len(self._list) > 0:
+            for i in range(len(self._list)): # The following lines remove dupes
+                j = len(list) - 1
+                while j >= 0:
+                    if self._list[i].link == list[j].link:
+                        del list[j]
+                        break
+                    j -= 1
         length = len(list)
         self._list = list + self._list
         return length
