@@ -9,7 +9,10 @@ class ItemKijiji(Item):
     @property
     def image(self):
         "link to image"
-        return re.sub('thumbnail\.jpg$', 'big.jpg', self._image)
+        if self._image:
+            return re.sub('thumbnail\.jpg$', 'big.jpg', self._image)
+        return None
+
     @property
     def title(self):
         "Name of the article"
@@ -59,6 +62,7 @@ class ItemKijiji(Item):
 
 class PageKijiji(Page):
 
+    _sanitize_attributes = {'class':'top-ad-row-bg'}
     _items_attributes = {'class':'srp-item'}
     _url = 'http://m.kijiji.it/s-annunci/italia/{0}/c0-l0'
 

@@ -2,7 +2,7 @@ from kijiji import PageKijiji, ItemKijiji
 from page import Container
 
 def json_test():
-    page = PageKijiji('thinkpad')
+    page = PageKijiji('auto')
     cont = Container(page.output())
     fp = open('json_test', 'w')
     fp.write(cont.to_JSON())

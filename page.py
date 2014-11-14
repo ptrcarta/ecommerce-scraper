@@ -24,6 +24,7 @@ class Page:
         delitems = self._content.find_all(attrs = self._sanitize_attributes)
         for i in delitems:
             i.extract()
+        delitems = self._content.find_all(attrs = self._sanitize_attributes)
         if len(delitems) != 0:
             raise Exception('Could not sanitize the page completely')
 
@@ -36,6 +37,8 @@ class Page:
         self.sanitize()
         return self.output()
 
+
+import time
 
 class Item:
     "container class for an item."
@@ -92,10 +95,14 @@ class Container():
         return json_string
 
     def add(self, list):
-        length = len(self._list)
-        for item in range(length):
-            for new in list:
-                if item.link == new.link:
-                    del new
-                    continue
+        "adds the items to the container and checks for dupes"
+        for i in range(len(self._list)): # The following lines remove dupes
+            j = len(list) - 1
+            while j >= 0:
+                if self._list[i].link == list[j].link:
+                    del list[j]
+                    break
+                j -= 1
+        length = len(list)
         self._list = list + self._list
+        return length
